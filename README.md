@@ -1,7 +1,5 @@
 # example
 
-![](/images/list.png)
-![](/images/content.png)
 
 ## QuickStart
 
