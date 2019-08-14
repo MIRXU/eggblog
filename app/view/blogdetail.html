@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+   
+    <title>博客详情</title>
+    <style>
+    .content{
+        width: 60%;
+        margin: 0 auto;
+    }
+    ul li{
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+        border-bottom: 1px solid #eee;
+        padding-top: 5px;
+    }
+    </style>
+    
+</head>
+<body>
+    <div class="content">
+        <div  class="panel panel-info">
+            <div class="panel-heading">
+             
+                            <%=info.title%>
+                            <span style="margin-left: 20px"> 类型:</span><i><%=info.category.type%></i>
+                            <span style="margin-left: 20px"> <%=helper.formatTime(info.createtime)%></span>
+                            <span style="margin-left: 20px"> 浏览量:</span><i><%=info.readnum%></i>
+                            <%if(collection){%>
+
+                                <a href="#" id="cancelcollection" data-id="<%=info.id%>"> 已收藏</a>
+                                <%}else{%>
+                                  
+                                    <a href="#" id="collection" data-id="<%=info.id%>">收藏</a>
+                               <%}%>
+                           
+                           <a href="#" id="comment">评论</a>
+                 
+            </div>
+            <div class="panel-body">
+               
+                    <div  style="border: 1px solid #ccc;padding: 20px;">
+        
+                            <img src="<%=info.img%>" alt="">
+                            <p><%=info.content%></p>
+                    </div>
+            </div>
+            
+        </div>
+           <div  style="display: none" id="commentdiv">
+                <input type="text" name="content">
+                <input type="hidden" name="id" value="<%=info.id%>">
+                <input type="hidden" name="user_id" value="<%=info.user_id%>">
+                <input type="hidden" name="blog_id" value="<%=info.id%>">
+                <button id="submit">提交</button>
+           </div>
+           <ul >
+                <% for(var i=0;i<comment.length;i++){%>
+                        <li>
+                            <span>
+                                    <%=helper.formatTime(comment[i].createdate)%>
+                            </span>
+                            <p>
+                                    <%=comment[i].content%>
+                            </p>
+                            
+                        </li>
+                <%}%>
+
+          
+           </ul>
+    </div>
+
+                              
+
+                               <script>
+                               $("#comment").click(function(){
+                                   $("#commentdiv").css("display", 'block')
+                               })
+                               $("#submit").click(function(){
+                                 
+                                   let conetnt=$("input[name='content']").val();
+                                  
+                                  $.ajax({
+                                      url:'/blog/comment',
+                                      method:'post',
+                                      data:{content:$("input[name='content']").val(),blog_id:$("input[name='blog_id']").val()},
+                                      success:function(res){
+                                          if(res.result.success==1){
+                                              alert("添加成功")
+                                              window.location.href="/blog/detail?id="+$("input[name='id']").val()
+                                          }else{
+                                            alert("添加失败")
+                                          }
+                                         
+                                      }
+                    
+                                  })
+                               })
+                            $("#collection").click(function(){
+                            
+                                $.ajax({
+                                      url:'/blog/collection',
+                                      method:'get',
+                                      data:{id:$(this).attr("data-id")},
+                                      success:function(res){
+                                          if(res.result.success>0){
+                                      
+                                            location.reload();
+                                          }
+                                         
+                                      }
+                    
+                                  })
+                            })
+                            $("#cancelcollection").click(function(){
+                                $.ajax({
+                                      url:'/blog/cancelcollection',
+                                      method:'get',
+                                      data:{id:$(this).attr("data-id")},
+                                      success:function(res){
+                                          if(res.result.success>0){
+                                          
+                                            location.reload();
+                                          }
+                                         
+                                      }
+                    
+                                  })
+                            })
+                               </script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>博客列表</title>
+    <style>
+        body{
+            width: 60%;
+            margin: 0 auto;
+        }
+            ul li{
+                list-style: none;
+            }
+            .nav {
+                float: right;
+            }
+    
+            .nav li {
+                float: left;
+                margin-left: 20px;
+            }
+            
+            .content li{
+                border-bottom: 1px solid #eee;
+            }
+        </style>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $(".delete").click(function(){
+    
+                $.ajax({
+                    url:'/blog/delete',
+                    method:'post',
+                    data:{id: $(this).attr("data-id")},
+                    success:function(res){
+                        if(res.result.success==1){
+                            alert("删除成功")
+                            window.location.href="/admin"
+                        }else{
+                            alert("删除失败")
+                        }
+                    }
+                })
+            })
+        })
+        </script>
+</head>
+<body>
+        <ul style="clear: both;margin-top: 30px" class="list-group content">
+                <% for(var i=0;i<info.length;i++){%>
+                    <li class="list-group-item">
+                        <h5>
+                            <%=info[i].title%>
+                            <span style="margin-left: 20px">
+                                    <%=helper.formatTime(info[i].createtime)%>
+                            </span>
+                        </h5>
+                        <p>
+                            <%=info[i].content%>
+                            <a href="/blog/detail?id=<%=info[i].id%>">详情</a>
+                            <a href="#" class="delete" data-id="<%=info[i].id%>">删除</a>
+                        </p>
+                       
+                    </li>
+                    <%}%>
+            </ul>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+
+		<!DOCTYPE html>
+		<html lang="zh">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<meta http-equiv="X-UA-Compatible" content="ie=edge">
+			<title></title>
+				<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+			<style type="text/css">
+			#content{
+				width: 62.375rem;
+				padding: 1.25rem;
+				background: #ccc;
+				margin: 0 auto;
+			}
+				ul li{
+					list-style: none;
+					float: left;
+					padding-left: 1.25rem;
+					padding-top: 0.9375rem;
+					background: #ccc;
+				}
+				h3,#category{
+					width: 62.375rem; 
+					margin: 0 auto;
+				}
+				
+			</style>
+		</head>
+		<body>
+			<div id="content">
+				<select id="category">
+					<%for(var i=0;i<list.category.length;i++){%>
+						<option value ="<%=list.category[i].lab%>"><%=list.category[i].title%></option>
+					<%}%>
+				</select>
+				<h3 style="margin: 0 auto;"><%=list.name%></h3>
+				<ul>
+						<%for(var i=0;i<list.list.length;i++){%>
+							<li>
+								<a href="/bookDetail1?content=<%=list.list[i].lab%>">
+									<%=list.list[i].title%>
+								</a>
+								
+							</li>
+						<%}%>
+					
+					
+				</ul>
+			</div>
+			
+			
+			<script type="text/javascript">
+				$("#category").change(function(val){
+					var grade =$(this).val();
+					 window.location.href="/booklist?name="+grade
+				})
+				
+			</script>
+		<script type="text/javascript">
+		
+		</script>
+		
+		</body>
+		</html>
